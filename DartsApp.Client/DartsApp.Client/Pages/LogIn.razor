@@ -1,0 +1,30 @@
+﻿@using DartsApp.Client.Services
+
+@inject IUserSessionProvider SessionProvider
+@inject NavigationManager NavigationManager
+
+@page "/login"
+
+<PageTitle>Log In</PageTitle>
+
+<input type="text" @bind=Login />
+<input type="password" @bind=Password />
+<div @onclick=OnLogInButton> Log In!</div>
+
+@code
+{
+    public string Login = string.Empty;
+    public string Password = string.Empty;
+
+    protected override void OnInitialized()
+    {
+
+        base.OnInitialized();
+    }
+
+    public void OnLogInButton()
+    {
+        SessionProvider.Login(Login, Password);
+        NavigationManager.NavigateTo("/");
+    }
+}

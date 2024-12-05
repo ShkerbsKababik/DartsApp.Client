@@ -1,3 +1,16 @@
-﻿@inherits LayoutComponentBase
+﻿@using DartsApp.Client.Services
+
+@inherits LayoutComponentBase
+
+@inject IUserSessionProvider SessionProvider
+
+<div>session: @SessionProvider.SessionId</div>
+<hr /><br />
+
+<div>
+    <NavLink href="login">Log In</NavLink>
+    <NavLink href="signin">Sign In</NavLink>
+    <NavLink href="game">Start Game</NavLink>
+</div>
 
 @Body

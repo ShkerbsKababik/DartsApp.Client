@@ -1,7 +1,31 @@
-﻿@page "/"
+﻿@using DartsApp.Client.Services
+
+@inject IUserSessionProvider SessionProvider
+@inject ICookieService CookieService
+
+@page "/"
+@page "/home"
+@page "/main"
+@page "/index"
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<div>@Cookie</div>
+<div @onclick=OnRefreshButtonClick>refresh</div>
 
-Welcome to your new app.
+@code
+{
+    public string Cookie { get; set; }
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        Cookie = string.Empty;
+    }
+
+    public void OnRefreshButtonClick()
+    {
+        string cookie = CookieService.GetCookieAsync("userSessionId").Result;
+        Cookie = cookie;
+    }
+}

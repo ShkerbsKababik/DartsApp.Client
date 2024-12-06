@@ -5,7 +5,7 @@
         public Guid SessionId { get; set; }
         public event EventHandler<Guid> OnSessionIdChanged;
         public Task<Guid> LoginAsync(string login, string password);
-        public void Logout();
+        public void LoguotAsync();
     }
     public class OfflineUserSessionProvider : IUserSessionProvider
     {
@@ -36,9 +36,9 @@
             return SessionId;
         }
 
-        public void Logout()
+        public async void LoguotAsync()
         {
-            _cookieService.DeleteCookieAsync("userSessionId");
+            await _cookieService.DeleteCookieAsync("userSessionId");
             SessionId = Guid.Empty;
         }       
     }

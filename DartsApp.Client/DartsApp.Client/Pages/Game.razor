@@ -12,9 +12,9 @@
 <hr />
 
 <div>score:</div>
-@foreach (var pair in GameObj.Score)
-{ 
-    <div>@pair.Key: @pair.Value</div>
+@foreach (var playerId in GameObj.PlayersIds)
+{
+    <div>@playerId: @GameObj.Score[playerId]</div>
 }
 <hr />
 

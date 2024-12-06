@@ -21,7 +21,6 @@
             {
                 Id = Guid.NewGuid(),
                 PlayersIds = palyersIds,
-                CurrentPlayerId = palyersIds[0],
             };
 
             game.Score = new Dictionary<Guid, int>();
@@ -29,6 +28,11 @@
             {
                 game.Score.Add(playerId, 301);
             }
+
+            // randomize players order
+            var random = new Random();
+            game.PlayersIds = game.PlayersIds.OrderBy(x => random.Next()).ToList();
+            game.CurrentPlayerId = game.PlayersIds[0];
 
             Games.Add(game.Id, game);
             return game.Id;
@@ -41,12 +45,25 @@
 
             var game = Games[gameId];
 
+            // apply score
             game.Score[playerId] -= score;
 
-            Guid previousPlayerGuid = playerId;
+            // set new current player
+            int lastPlayerIndex = -1;
             for (int i = 0; i < game.PlayersIds.Count; i++)
             {
-                
+                if (game.PlayersIds[i] == playerId)
+                { 
+                    lastPlayerIndex = i;
+                }
+            }
+            if (lastPlayerIndex == game.PlayersIds.Count - 1)
+            {
+                game.CurrentPlayerId = game.PlayersIds[0];
+            }
+            else
+            {
+                game.CurrentPlayerId = game.PlayersIds[lastPlayerIndex + 1];
             }
 
             return Games[gameId];

@@ -5,12 +5,28 @@
 @inject IUserSessionProvider SessionProvider
 
 <div>session: @SessionProvider.SessionId</div>
-<hr /><br />
+<hr />
 
 <div>
-    <NavLink href="login">Log In</NavLink>
-    <NavLink href="signin">Sign In</NavLink>
-    <NavLink href="game">Start Game</NavLink>
+    <NavLink href="login"> Log In </NavLink>
+    @if (SessionProvider.SessionId != Guid.Empty)
+    {
+        <NavLink href="logout">| Log Out </NavLink>
+        <NavLink href="game">| Start Game </NavLink>
+    }
 </div>
+<hr />
 
 @Body
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        SessionProvider.OnSessionIdChanged += (object? o, Guid guid) => 
+        { 
+            StateHasChanged();         
+        };
+    }
+}

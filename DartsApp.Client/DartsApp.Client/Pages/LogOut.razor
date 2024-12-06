@@ -1,0 +1,17 @@
+﻿@using DartsApp.Client.Services
+
+@inject IUserSessionProvider SessionProvider
+@inject NavigationManager NavigationManager
+
+@page "/logout"
+
+<PageTitle>Log Out</PageTitle>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        SessionProvider.Logout();
+        NavigationManager.NavigateTo("/");
+    }
+}

@@ -24,8 +24,7 @@ namespace DartsApp.Client.Services
 
         public async Task<string> GetCookieAsync(string name)
         {
-            string str = await _jsRuntime.InvokeAsync<string>("getCookie", name);
-            return str;
+            return await _jsRuntime.InvokeAsync<string>("getCookie", name);
         }
 
         public async Task DeleteCookieAsync(string name)

@@ -10,22 +10,12 @@
 
 <PageTitle>Home</PageTitle>
 
-<div>@Cookie</div>
-<div @onclick=OnRefreshButtonClick>refresh</div>
+
 
 @code
 {
-    public string Cookie { get; set; }
     protected override void OnInitialized()
     {
         base.OnInitialized();
-
-        Cookie = string.Empty;
-    }
-
-    public void OnRefreshButtonClick()
-    {
-        string cookie = CookieService.GetCookieAsync("userSessionId").Result;
-        Cookie = cookie;
     }
 }

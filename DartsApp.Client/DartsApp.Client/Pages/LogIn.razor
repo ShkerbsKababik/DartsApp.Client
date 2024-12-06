@@ -18,13 +18,12 @@
 
     protected override void OnInitialized()
     {
-
         base.OnInitialized();
     }
 
     public void OnLogInButton()
     {
-        SessionProvider.Login(Login, Password);
+        SessionProvider.LoginAsync(Login, Password);
         NavigationManager.NavigateTo("/");
     }
 }

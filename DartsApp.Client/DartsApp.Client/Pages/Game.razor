@@ -1,0 +1,48 @@
+﻿@using DartsApp.Client.Services
+
+@inject IUserSessionProvider SessionProvider
+@inject IGameSessionHandler GameHandler
+@inject NavigationManager NavigationManager
+
+@page "/game/{gameId:guid}"
+
+<PageTitle>Game</PageTitle>
+
+<div>gameId: @GameObj.Id; currentPlayer: @GameObj.CurrentPlayerId</div>
+<hr />
+
+<div>score:</div>
+@foreach (var pair in GameObj.Score)
+{ 
+    <div>@pair.Key: @pair.Value</div>
+}
+<hr />
+
+<input type="text" @bind=Value1 /><br />
+<input type="text" @bind=Value2 /><br />
+<input type="text" @bind=Value3 /><br />
+<div @onclick=OnUpdateScoreButton>update score</div>
+<hr />
+
+@code
+{
+    [Parameter]
+    public Guid GameId { get; set; }
+
+    public Services.Game GameObj { get; set; }
+
+    public int Value1 { get; set; }
+    public int Value2 { get; set; }
+    public int Value3 { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        GameObj = GameHandler.ConnectGame(GameId);
+    }
+    public void OnUpdateScoreButton()
+    {
+        GameObj = GameHandler.UpdateScore(GameObj.Id, GameObj.CurrentPlayerId, Value1 + Value2 + Value3);
+    }
+}

@@ -1,0 +1,33 @@
+﻿@using DartsApp.Client.Services
+
+@inject IGameSessionHandler GameHandler
+@inject NavigationManager NavigationManager
+
+@page "/creategame"
+
+<PageTitle>Create Game</PageTitle>
+
+<div>players:</div>
+@foreach (var id in Players)
+{
+    <div>@id</div>
+}
+<hr />
+
+<div @onclick=OnAddUserButton>add player</div>
+<div @onclick=OnCreateGameButton>create game</div>
+
+@code
+{
+    public List<Guid> Players = new List<Guid>();
+
+    public void OnAddUserButton()
+    {
+        Players.Add(Guid.NewGuid());
+    }
+    public void OnCreateGameButton()
+    {
+        Guid gameId = GameHandler.CreateGame(Players);
+        NavigationManager.NavigateTo($"/game/{gameId}");
+    }
+}

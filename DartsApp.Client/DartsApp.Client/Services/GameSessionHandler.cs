@@ -46,7 +46,10 @@
             var game = Games[gameId];
 
             // apply score
-            game.Score[playerId] -= score;
+            if (score <= game.Score[playerId])
+            {
+                game.Score[playerId] -= score;
+            }
 
             // set new current player
             int lastPlayerIndex = -1;

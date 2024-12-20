@@ -1,7 +1,8 @@
 ﻿@using DartsApp.Client.Services
 
-@inject IGameSessionHandler GameHandler
 @inject NavigationManager NavigationManager
+@inject IUserSessionProvider UserSessionProvider
+@inject IGameService GameService
 
 @page "/creategame"
 
@@ -27,7 +28,13 @@
     }
     public void OnCreateGameButton()
     {
-        Guid gameId = GameHandler.CreateGame(Players);
+        var creationInfo = new GameCreationInfo()
+        { 
+            OwnerId = UserSessionProvider.SessionId,
+            Players = Players
+        };
+
+        var gameId = GameService.CreateGame(creationInfo);
         NavigationManager.NavigateTo($"/game/{gameId}");
     }
 }

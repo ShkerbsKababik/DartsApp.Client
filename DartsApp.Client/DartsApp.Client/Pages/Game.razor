@@ -1,20 +1,20 @@
 ﻿@using DartsApp.Client.Services
 
 @inject IUserSessionProvider SessionProvider
-@inject IGameSessionHandler GameHandler
 @inject NavigationManager NavigationManager
+@inject IGameService GameService
 
 @page "/game/{gameId:guid}"
 
 <PageTitle>Game</PageTitle>
 
-<div>gameId: @GameObj.Id; currentPlayer: @GameObj.CurrentPlayerId</div>
+<div>gameId: @GameObj.Id; currentPlayer: @GameObj.CurrentPlayer</div>
 <hr />
 
 <div>score:</div>
-@foreach (var playerId in GameObj.PlayersIds)
+@foreach (var playerId in GameObj.Players)
 {
-    <div>@playerId: @GameObj.Score[playerId]</div>
+    <div>@playerId: @GameObj.Players</div>
 }
 <hr />
 
@@ -38,11 +38,16 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-
-        GameObj = GameHandler.ConnectGame(GameId);
+        GameObj = GameService.GetGameInfo(GameId);
     }
     public void OnUpdateScoreButton()
     {
-        GameObj = GameHandler.UpdateScore(GameObj.Id, GameObj.CurrentPlayerId, Value1 + Value2 + Value3);
+        var scoreInfo = new ApplyScoreInfo()
+        { 
+
+        };
+
+        GameService.ApplyScore(scoreInfo);
+        GameObj = GameService.GetGameInfo(GameId);
     }
 }

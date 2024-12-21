@@ -1,27 +1,30 @@
 ﻿@using DartsApp.Client.Services
 
-@inject IUserSessionProvider SessionProvider
 @inject NavigationManager NavigationManager
+@inject IUserSessionProvider UserSessionProvider
 @inject IGameService GameService
 
 @page "/game/{gameId:guid}"
 
 <PageTitle>Game</PageTitle>
 
-<div>gameId: @GameObj.Id; currentPlayer: @GameObj.CurrentPlayer</div>
+<div>gameId: @GameObj?.Id; currentPlayer: @GameObj?.CurrentPlayer</div>
 <hr />
 
 <div>score:</div>
-@foreach (var playerId in GameObj.Players)
-{
-    <div>@playerId: @GameObj.Players</div>
+@if (GameObj != null && GameObj.Players != null)
+{ 
+    foreach (var playerId in GameObj.Players)
+    {
+        <div>@playerId: @GameObj.Players</div>
+    }
 }
 <hr />
 
 <input type="text" @bind=Value1 /><br />
 <input type="text" @bind=Value2 /><br />
 <input type="text" @bind=Value3 /><br />
-<div @onclick=OnUpdateScoreButton>update score</div>
+<div @onclick=OnUpdateScoreButtonAsync>update score</div>
 <hr />
 
 @code
@@ -38,16 +41,22 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        GameObj = GameService.GetGameInfo(GameId);
+        LoadGameAsync();
     }
-    public void OnUpdateScoreButton()
+    public async void LoadGameAsync()
+    {
+        var game = await GameService.GetGameInfoAsync(GameId);
+        GameObj = game;
+        // StateHasChanged();    
+    }
+    public async void OnUpdateScoreButtonAsync()
     {
         var scoreInfo = new ApplyScoreInfo()
         { 
 
         };
 
-        GameService.ApplyScore(scoreInfo);
-        GameObj = GameService.GetGameInfo(GameId);
+        await GameService.ApplyScoreAsync(scoreInfo);
+        GameObj = await GameService.GetGameInfoAsync(GameId);
     }
 }

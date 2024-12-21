@@ -26,7 +26,7 @@
     {
         Players.Add(Guid.NewGuid());
     }
-    public void OnCreateGameButton()
+    public async void OnCreateGameButton()
     {
         var creationInfo = new GameCreationInfo()
         { 
@@ -34,7 +34,7 @@
             Players = Players
         };
 
-        var gameId = GameService.CreateGame(creationInfo);
+        var gameId = await GameService.CreateGameAsync(creationInfo);
         NavigationManager.NavigateTo($"/game/{gameId}");
     }
 }

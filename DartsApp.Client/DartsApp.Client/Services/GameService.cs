@@ -7,9 +7,9 @@ namespace DartsApp.Client.Services
 {
     public interface IGameService
     {
-        public Guid CreateGame(GameCreationInfo creationInfo);
-        public void ApplyScore(ApplyScoreInfo scoreInfo);
-        public Game GetGameInfo(Guid gameId);
+        public Task<Guid> CreateGameAsync(GameCreationInfo creationInfo);
+        public Task ApplyScoreAsync(ApplyScoreInfo scoreInfo);
+        public Task<Game> GetGameInfoAsync(Guid gameId);
     }
     public class GameService : IGameService
     {
@@ -19,30 +19,22 @@ namespace DartsApp.Client.Services
             _httpClient = httpClient;
         }
 
-        public void ApplyScore(ApplyScoreInfo scoreInfo)
-            => ApplyScoreAsync(scoreInfo);
-
-        public async void ApplyScoreAsync(ApplyScoreInfo scoreInfo)
+        public async Task ApplyScoreAsync(ApplyScoreInfo scoreInfo)
         {
             await _httpClient.PostAsJsonAsync("https://localhost:7030/GameService/ApplyScore", scoreInfo);
         }
 
-        public Guid CreateGame(GameCreationInfo creationInfo)
-            => CreateGameAsync(creationInfo).Result;
-
         public async Task<Guid> CreateGameAsync(GameCreationInfo creationInfo)
         {
             var response = await _httpClient.PostAsJsonAsync("https://localhost:7030/GameService/CreateGame", creationInfo);
-            return await response.Content.ReadFromJsonAsync<Guid>();
+            var giud = await response.Content.ReadFromJsonAsync<Guid>();
+            return giud;
         }
-
-        public Game GetGameInfo(Guid gameId)
-            => GetGameInfoAsync(gameId).Result;
 
         public async Task<Game> GetGameInfoAsync(Guid gameId)
         {
-            var response = await _httpClient.PostAsJsonAsync("https://localhost:7030/GameService/GetGameInfoAsync", gameId);
-           return await response.Content.ReadFromJsonAsync<Game>();      
+            var response = await _httpClient.GetAsync($"https://localhost:7030/GameService/GetGameInfo/{gameId}");
+            return await response.Content.ReadFromJsonAsync<Game>();      
         }
     }
     public class GameCreationInfo

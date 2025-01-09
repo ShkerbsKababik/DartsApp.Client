@@ -8,7 +8,7 @@ namespace DartsApp.Client.Services
     public interface IGameService
     {
         public Task<Guid> CreateGameAsync(GameCreationInfo creationInfo);
-        public Task ApplyScoreAsync(ApplyScoreInfo scoreInfo);
+        public Task<Game> ApplyScoreAsync(ApplyScoreInfo scoreInfo);
         public Task<Game> GetGameInfoAsync(Guid gameId);
     }
     public class GameService : IGameService
@@ -19,9 +19,11 @@ namespace DartsApp.Client.Services
             _httpClient = httpClient;
         }
 
-        public async Task ApplyScoreAsync(ApplyScoreInfo scoreInfo)
+        public async Task<Game> ApplyScoreAsync(ApplyScoreInfo scoreInfo)
         {
-            await _httpClient.PostAsJsonAsync("https://localhost:7030/GameService/ApplyScore", scoreInfo);
+            var responce = await _httpClient.PostAsJsonAsync("https://localhost:7030/GameService/ApplyScore", scoreInfo);
+            var game = await responce.Content.ReadFromJsonAsync<Game>();
+            return game ?? throw new Exception($"game not found"); ;
         }
 
         public async Task<Guid> CreateGameAsync(GameCreationInfo creationInfo)
@@ -34,7 +36,8 @@ namespace DartsApp.Client.Services
         public async Task<Game> GetGameInfoAsync(Guid gameId)
         {
             var response = await _httpClient.GetAsync($"https://localhost:7030/GameService/GetGameInfo/{gameId}");
-            return await response.Content.ReadFromJsonAsync<Game>();      
+            var game = await response.Content.ReadFromJsonAsync<Game>();
+            return game ?? throw new Exception($"game not found");
         }
     }
     public class GameCreationInfo

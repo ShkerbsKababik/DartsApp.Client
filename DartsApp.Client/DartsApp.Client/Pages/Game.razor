@@ -47,16 +47,20 @@
     {
         var game = await GameService.GetGameInfoAsync(GameId);
         GameObj = game;
-        // StateHasChanged();    
+        StateHasChanged();
     }
     public async void OnUpdateScoreButtonAsync()
     {
         var scoreInfo = new ApplyScoreInfo()
         { 
-
+            GameId = GameObj.Id,
+            PlayerId = GameObj.CurrentPlayer,
+            
+            FirstRun = Value1,
+            SecondRun = Value2,
+            ThirdRun = Value3
         };
 
-        await GameService.ApplyScoreAsync(scoreInfo);
-        GameObj = await GameService.GetGameInfoAsync(GameId);
+        GameObj = await GameService.ApplyScoreAsync(scoreInfo);
     }
 }

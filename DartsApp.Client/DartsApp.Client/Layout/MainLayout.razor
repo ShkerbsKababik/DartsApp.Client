@@ -1,32 +1,17 @@
-﻿@using DartsApp.Client.Services
+﻿@inherits LayoutComponentBase
 
-@inherits LayoutComponentBase
+@using MudBlazor
 
-@inject IUserSessionProvider SessionProvider
+<MudThemeProvider IsDarkMode="true"/>
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-<div>session: @SessionProvider.SessionId</div>
-<hr />
-
-<div>
-    <NavLink href="login"> Log In </NavLink>
-    @if (SessionProvider.SessionId != Guid.Empty)
-    {
-        <NavLink href="logout">| Log Out </NavLink>
-        <NavLink href="creategame">| Create Game </NavLink>
-    }
-</div>
-<hr />
-
-@Body
-
-@code
-{
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        SessionProvider.OnSessionIdChanged += (object? o, Guid guid) => 
-        { 
-            StateHasChanged();         
-        };
-    }
-}
+<MudLayout>
+    <MudAppBar Elevation="1" Color="Color.Primary">
+        <MudText Typo="Typo.h5" Class="ml-3">Darts</MudText>
+    </MudAppBar>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>

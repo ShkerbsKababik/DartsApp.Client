@@ -1,4 +1,5 @@
-﻿@using DartsApp.Client.Services
+﻿@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
 
 @page "/"
 @page "/home"
@@ -7,12 +8,33 @@
 
 <PageTitle>Home</PageTitle>
 
-<div> Home page</div>
+<MudContainer MaxWidth="MaxWidth.Medium" Class="pa-4">
+    <MudPaper Class="pa-4">
+        <MudTextField T="string" Label="With Helper" HelperText="Some helping text" Variant="Variant.Text" />
+        <MudTextField T="string" Label="With Helper" HelperText="Some helping text" Variant="Variant.Text" />
+        <MudTextField T="string" Label="With Helper" HelperText="Some helping text" Variant="Variant.Text" />
+    </MudPaper>
+</MudContainer>
+<MudContainer MaxWidth="MaxWidth.Medium" Class="pa-4">
+    <MudPaper Class="pa-4">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnButtonClicked">I am Balrog</MudButton>
+        <MudChip T="string">@state</MudChip>
+    </MudPaper>
+</MudContainer>
 
 @code
 {
-    protected override void OnInitialized()
+    [Inject] private IDialogService DialogService { get; set; }
+
+    string state = "Message box hasn't been opened yet";
+
+    private async void OnButtonClicked()
     {
-        base.OnInitialized();
+        bool? result = await DialogService.ShowMessageBox(
+            "Secure The Ring",
+            (MarkupString)$"You <br /> Shall <br /> not <br /> <b>Pass!<b/>",
+            yesText: "Fire Whip!", cancelText: "Smash Ground");
+        state = result == null ? "Returned to Moria" : "Fighting With Gandalf!";
+        StateHasChanged();
     }
 }

@@ -2,6 +2,8 @@ using DartsApp.Client;
 using DartsApp.Client.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor;
+using MudBlazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -14,6 +16,9 @@ builder.Services.AddScoped(sp =>
     {
         BaseAddress = new Uri("http://localhost:5213")
     });
+
+// Mud Blazor
+builder.Services.AddMudServices();
 
 builder.Services.AddScoped<IUserSessionProvider, OfflineUserSessionProvider>();
 builder.Services.AddScoped<ICookieService, CookieService>();

@@ -2,14 +2,18 @@
 <html lang="en">
 
 <head>
+    <!--Meta-->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DartsApp.Client</title>
+
+    <!--Links-->
     <base href="/" />
     <link rel="stylesheet" href="css/app.css" />
-    <script src="js/CookieService.js"></script>
-    <!-- If you add any scoped CSS files, uncomment the following to load them
-    <link href="DartsApp.Client.styles.css" rel="stylesheet" /> -->
+
+    <!--Mud Blazor-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -26,7 +30,15 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+
+    <!--Blazor-->
     <script src="_framework/blazor.webassembly.js"></script>
+
+    <!--Mud Blazor-->
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+
+    <!--Local Scripts-->
+    <script src="js/CookieService.js"></script>
 </body>
 
 </html>
